@@ -19,9 +19,36 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:id="@+id/stationlistview"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LocalChannels"
+        android:id="@+id/globalbtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VideoLiploc"
+        android:id="@+id/LipLocBtn"
+        android:layout_alignTop="@+id/globalbtn"
+        android:layout_toLeftOf="@+id/stopbtn"
+        android:layout_toStartOf="@+id/stopbtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:id="@+id/stopbtn"
+        android:layout_alignTop="@+id/LipLocBtn"
+        android:layout_alignRight="@+id/stationlistview"
+        android:layout_alignEnd="@+id/stationlistview" />
 </RelativeLayout>

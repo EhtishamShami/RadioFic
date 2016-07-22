@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +42,8 @@ import co.mobiwise.library.radio.RadioManager;
  */
 public class RadioActivity extends Activity implements RadioListener{
 
+    private int ACTIVITY_START_CAMERA_APP = 0;
+
     //private final String[] RADIO_URL = {"http://hayatmix.net/;yayin.mp3.m3u"};
     private final String[] RADIO_URL = {"http://184.154.145.114:8128/"};
     RadioManager mRadioManager = RadioManager.with(this);
@@ -53,7 +57,7 @@ public class RadioActivity extends Activity implements RadioListener{
     private ArrayList<String>urlData = new ArrayList<>();
     private int selectedRow = 0;
     boolean flag;
-
+    Button liploc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,22 @@ public class RadioActivity extends Activity implements RadioListener{
 
         mRadioManager.registerListener(this);
         mRadioManager.setLogging(true);
+
+
+        liploc=(Button)findViewById(R.id.LipLocBtn);
+
+        liploc.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Intent callVideoAppIntent = new Intent();
+
+                callVideoAppIntent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
+                callVideoAppIntent.putExtra("android.intent.extra.durationLimit", 10);
+                startActivityForResult(callVideoAppIntent, ACTIVITY_START_CAMERA_APP);
+            }
+        });
+
 
         Bundle extras = getIntent().getExtras();
         final String channel_id = extras.getString("id");
@@ -199,7 +219,7 @@ public class RadioActivity extends Activity implements RadioListener{
             @Override
             public void run() {
                 //TODO Do UI works here.
-              //  mTextViewControl.setText("RADIO STATE : LOADING...");
+                //  mTextViewControl.setText("RADIO STATE : LOADING...");
             }
         });
     }
@@ -240,4 +260,27 @@ public class RadioActivity extends Activity implements RadioListener{
     public void onError() {
 
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ACTIVITY_START_CAMERA_APP && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            Context context = getApplicationContext();
+            int length = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, videoUri.toString(), length);
+            toast.show();
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("video/mp4");
+            shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My test");
+            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Lets see");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
+            startActivity(Intent.createChooser(shareIntent, "Share video using"));
+
+
+        }
+    }
+
+
+
+
 }
