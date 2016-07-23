@@ -38,13 +38,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
+/**
+ * Created by Shami 7/16/2016
+ */
 public class MainActivity extends Activity {
     boolean flag;
     TextView output ;
     String loginURL="http://radioific.com/api/get_category_index/";
     String data = "";
-    String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry","WebOS","Ubuntu","Windows7","Max OS X"};
     ArrayList titles=new ArrayList<String>();
     RequestQueue requestQueue;
     private int selectedRow = 0;

@@ -149,7 +149,13 @@ public class RadioManager implements IRadioManager {
     @Override
     public void disconnect() {
         log("Service Disconnected.");
-        mContext.unbindService(mServiceConnection);
+        try {
+            mContext.unbindService(mServiceConnection);
+        }
+        catch(IllegalArgumentException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     /**

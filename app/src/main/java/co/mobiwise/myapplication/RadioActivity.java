@@ -51,14 +51,14 @@ public class RadioActivity extends Activity implements RadioListener{
     TextView output ;
     String loginURL;
     String data = "";
-    String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry","WebOS","Ubuntu","Windows7","Max OS X"};
     ArrayList titles=new ArrayList<String>();
     RequestQueue requestQueue;
     private ArrayList<String>urlData = new ArrayList<>();
     private int selectedRow = 0;
     boolean flag;
     Button liploc;
-
+    Button localst;
+    Button playpause;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +83,38 @@ public class RadioActivity extends Activity implements RadioListener{
             }
         });
 
+        localst=(Button)findViewById(R.id.globalbtn);
+
+
 
         Bundle extras = getIntent().getExtras();
         final String channel_id = extras.getString("id");
         flag=extras.getBoolean("flag");
         Context context=getApplicationContext();
-        Toast toast=Toast.makeText(context, "The Flag is "+flag,Toast.LENGTH_SHORT);
+        Toast toast=Toast.makeText(context, "The Flag is " + flag, Toast.LENGTH_SHORT);
         toast.show();
+
         int id=Integer.parseInt(channel_id);
+
+        localst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent localstation = new Intent(RadioActivity.this, localstations.class);
+                localstation.putExtra("id", channel_id);
+                startActivity(localstation);
+            }
+        });
+        playpause=(Button)findViewById(R.id.stopbtn);
+        playpause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mRadioManager.isPlaying()) {
+                    mRadioManager.stopRadio();
+                }
+
+            }
+        });
+
         loginURL="http://radioific.com/api/get_category_posts/?category_id="+id+"&count=500&include=title,url,custom_fields&custom_fields=customfield_reputation_1,customfield_music_link_1,customfield_categories,customfield_radiostation_name,customfield_latitude_geomywp,customfield_longitude_geomywp";
         //  flag=true;
         if(savedInstanceState!=null){
